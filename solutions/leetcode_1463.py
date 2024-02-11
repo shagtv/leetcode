@@ -4,27 +4,19 @@ from functools import cache
 class Solution:
     def cherryPickup(self, grid: list[list[int]]) -> int:
         @cache
-        def helper(y1, x1, y2, x2):
-            if not 0 <= x1 < len(grid[0]) \
-                    or not 0 <= y1 < len(grid) \
-                    or not 0 <= x2 < len(grid[0]) \
-                    or not 0 <= y2 < len(grid) \
-                    or x1 == x2 and y1 == y2:
-                return 0
+        def helper(x1, x2, y):
+            if x1 < 0 or x1 >= len(grid[0]): return 0
+            if x2 < 0 or x2 >= len(grid[0]): return 0
+            if y >= len(grid): return 0
+            if x1 == x2: return 0
 
-            return grid[y1][x1] + grid[y2][x2] + max(
-                helper(y1 + 1, x1 - 1, y2 + 1, x2 - 1),
-                helper(y1 + 1, x1 - 1, y2 + 1, x2),
-                helper(y1 + 1, x1 - 1, y2 + 1, x2 + 1),
-                helper(y1 + 1, x1, y2 + 1, x2 - 1),
-                helper(y1 + 1, x1, y2 + 1, x2),
-                helper(y1 + 1, x1, y2 + 1, x2 + 1),
-                helper(y1 + 1, x1 + 1, y2 + 1, x2 - 1),
-                helper(y1 + 1, x1 + 1, y2 + 1, x2),
-                helper(y1 + 1, x1 + 1, y2 + 1, x2 + 1)
-            )
+            result = 0
+            for x1_diff in (-1, 0, 1):
+                for x2_diff in (-1, 0, 1):
+                    result = max(result, helper(x1 + x1_diff, x2 + x2_diff, y + 1))
+            return result + grid[y][x1] + grid[y][x2]
 
-        return helper(0, 0, 0, len(grid[0]) - 1)
+        return helper(0, len(grid[0]) - 1, 0)
 
 
 if __name__ == '__main__':
