@@ -29,7 +29,7 @@ class Solution:
 
 if __name__ == '__main__':
     given_grid = [[3, 1, 1], [2, 5, 1],[1, 5, 5],[2, 1, 1]]
-    expected = 25
+    expected = 24
 
     solution = Solution()
     result = solution.cherryPickup(given_grid)
